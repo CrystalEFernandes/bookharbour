@@ -23,7 +23,7 @@ To run the application locally, follow these steps:
 - Admins can log in to manage the inventory and track transactions.
 
 ## Inspiration
-The design of BookHarbour has been inspired by the creative work found on Figma. Special thanks to the Figma community for providing valuable design inspirations. The original design that inspired this project can be found [here] https://www.figma.com/community/file/1245110764014493726/ecommerce-big-bookshelf.
+The design of BookHarbour has been inspired by the creative work found on Figma. Special thanks to the Figma community for providing valuable design inspirations. The original design that inspired this project can be found <a href="https://www.figma.com/community/file/1245110764014493726/ecommerce-big-bookshelf">here.</a>
 
 ## Contributing
 Contributions to BookHarbour are welcome! Feel free to fork the repository, make improvements, and submit a pull request.

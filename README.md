@@ -1,15 +1,17 @@
 # BookHarbour
-BookHarbour is a web application designed to streamline the management of a book store's inventory and simplify user transactions. It provides a user-friendly interface for both store administrators and customers.
+BookHarbour is a web application designed to streamline the management of a book store's inventory and simplify user transactions. It provides a user-friendly interface for customers.
 
 ## Built With
 BookHarbour is built using the Django web framework.
 
 ## Key Features
 - **Inventory Management:** Easily add, update, and remove books from the store's inventory.
-- **User Cart Handling:** Customers can add books to their carts, review quantities, and proceed to checkout.
-- **Transaction Processing:** Smooth and secure processing of user transactions for purchased items.
+- **User Cart Handling:** Customers can add, remove, increase, and decrease the quantity of books in their carts, providing a seamless shopping experience.
 - **Quantity Controls:** Admins can adjust the quantity of books in the inventory, ensuring accurate stock management.
 - **Responsive Design:** The application is designed to be functional across various screens.
+- **Sorting and Filtering:** Users can sort and filter books based on various criteria, making it convenient to find specific titles or discover new ones or discovering pocket-friendly titles.
+- **Extensive Book Details:** Provides extensive information about each book, including descriptions, authors, genres, and more, enhancing the user's understanding of the available collection.
+- **Author Information:** Users can view comprehensive details about authors, explore their works, and find related books, contributing to a richer reading experience.
 
 ## Installation
 To run the application locally, follow these steps:
@@ -18,7 +20,6 @@ To run the application locally, follow these steps:
   3. Visit http://localhost:8000/home in your web browser to access the application.
 
 ## Usage
-- Navigate to the application in your browser.
 - Explore the inventory, add books to your cart, and proceed to checkout.
 - Admins can log in to manage the inventory and track transactions.
 

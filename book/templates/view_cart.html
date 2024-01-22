@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart - Bookstore</title>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2a2c2e;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .goback {
+            color: #2A2C2E;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px;
+            display: inline-block;
+            background-color: #ff511a;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .cart-container {
+            width: 80%;
+            background-color: #36393f;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .cart-items {
+            flex: 2;
+            margin-right: 20px;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #4f545c;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .book-details {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .book-image {
+            width: 80px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-info {
+            flex: 1;
+        }
+
+        .quantity-controls {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        button {
+            background-color: #ff511a;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .checkout-info {
+            flex: 1;
+            text-align: right;
+        }
+
+        h2,
+        h3,
+        p {
+            margin: 0;
+            color: #ddd;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .checkout-link {
+            color: #fff;
+            background-color: #27ae60;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 2rem;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-link:hover {
+            background-color: #218c53;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cart-container">
+        <div class="cart-items">
+            <h2>Your Cart</h2>
+            <a class='goback' href="{% url 'book_list' %}">Back to Book List</a>
+            <p>{{ message }}</p>
+
+            {% for item in cart %}
+                <div class="cart-item">
+                    <div class="book-details">
+                        <img class="book-image" src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }}">
+                        <div class="book-info">
+                            <h3>{{ item.book.title }}</h3>
+                            <p>Quantity: {{ item.quantity }}</p>
+                        </div>
+                    </div>
+                    <div class="quantity-controls">
+                        <form action="{% url 'decrement_cart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="book_id" value="{{ item.id }}">
+                            <input type="hidden" name="book_quantity_requested" value="{{ item.quantity }}">
+                            <button type="submit">-</button>
+                        </form>
+
+                        <form action="{% url 'increment_cart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="book_id" value="{{item.id}}">
+                            <input type="hidden" name="book_quantity_requested" value="{{item.quantity}}">
+                            <button type="submit">+</button>
+                        </form>
+
+                        <form action="{% url 'delete_from_cart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="book_id" value="{{ item.id }}">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="checkout-info">
+            <h2>Order Summary</h2>
+            <p>Total Items: {{ total_items }}</p>
+            <p style="margin-bottom: 2rem;">Total Cost: {{ total_cost }}</p>
+        
+            {% if total_items > 0 %}
+                <a class="checkout-link" style="cursor: pointer;" onclick="showPurchased()">Proceed to Checkout</a>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function showPurchased(){
+            alert("Yay Purchased")
+        }
+    </script>
+</body>
+
+</html>

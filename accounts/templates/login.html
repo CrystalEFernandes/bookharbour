@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'book_list.css' %}">
+    <link rel="stylesheet" href="{% static 'auth.css' %}">
+
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <img src="{% static 'Logo.svg' %}">
+            <ul class="navbar-nav">
+                <li><a href="{% url 'home_page' %}">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="{% url 'book_list' %}">Books</a></li>
+                <div class="separate">
+                    <img src="{% static 'Search.svg' %}">
+                    <a href="{% url 'view_cart' %}">
+                        <img src="{% static 'Cart.svg' %}">
+                    </a>
+                </div>
+
+            </ul>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6" >
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div style="justify-content: space-around; width: 100%;">
+                                <button type="submit">Login</button>
+                                <a href="{% url 'Signup' %}" class="sign-up-button">Sign Up</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

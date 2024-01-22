@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ book.title }} - Book Detail</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'book_list.css' %}">
+    <link rel="stylesheet" href="{% static 'book_detail.css' %}">
+    
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <img src="{% static 'Logo.svg' %}" style="height: 50px; margin: 0 2.5rem;">
+            <ul class="navbar-nav">
+                <li><a href="{% url 'home_page' %}">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="{% url 'book_list' %}">Books</a></li>
+                <div class="separate">
+                    <img src="{% static 'Search.svg' %}">
+                    <a href="{% url 'view_cart' %}">
+                        <img src="{% static 'Cart.svg' %}">
+                    </a>
+                </div>
+                <li class="login-button">
+                    {% if user.is_authenticated %}
+                        <form method="get" action="{% url 'logout_page' %}">
+                            <button type="submit">LOGOUT</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'Login' %}">LOGIN</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </header>
+    <a class='goback' href="{% url 'book_list' %}">Back to Book List</a>
+    <div class="ProductInfo">
+        <div class="Content">
+            <div class="Product">
+                <div class="Mg">
+                    <div class="img">
+                        <img class="BookCover" src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="width:314px;margin: 0 ;object-fit: cover; height: 476px;"/>
+                    </div>
+                </div>
+                <div class="Content">
+                    <div class="Book">
+                        <div class="Name">
+                            <div class="Author">{{ book.author.name }}</div>
+                            <div class="Title">{{ book.title }}</div>
+                        </div>
+                    </div>
+                    <div class="Rating">
+                        <div class="Rate">
+                            <div class="Star"></div>
+                            <div class="RatingValue">Average Rating by GoodReads: {{ book.avg_rating }}</div>
+                        </div>
+                    </div>
+                    <div class="Info">
+                        <div class="Category">
+                            <div class="CategoryLabel">Genre: {{ book.genre }}</div>
+                        </div>
+                        <div class="Date">
+                            <div class="PublishDateLabel">Publish date: {{ book.publication_date }}</div>
+                        </div>
+                        <div class="Language">
+                            <div class="LanguageLabel">Language: {{ book.language }}</div>
+                        </div>
+                        <div class="Page">
+                            <div class="PagesLabel">Pages: {{ book.pages }}</div>
+                        </div>
+                        <div class="Publisher">
+                            <div class="PublisherName">Publisher: {{ book.publisher }}</div>
+                        </div>
+                    </div>
+                    <div class="Price1">
+                        <div class="RealPrice">Price: Rs.{{ book.price }}</div>
+                    </div>
+                    <div class="Button">
+                        <button style="margin: 0;" onclick="showAlert()">Add To Cart</button>
+                    </div>
+                </div>
+                <div class='extra' style="width: 25%">
+                    <div class="PlotSummaryContainer" onclick="togglePlotSummary()">PLOT SUMMARY
+                        <div class="PlotSummary" style="width: 100%;">
+                            <div class="PlotSummaryContent">{{ book.description }}</div>
+                        </div>
+                    </div>
+                    <div class="authorInfoContainer" onclick="toggleAuthorInfo()">AUTHOR INFORMATION
+                        <div class="authorInfo" style="width: 100%;">
+                            <div class="authorInfoContent"><b>Name:</b> {{ book.author.name }}</div>
+                            <div class="authorInfoContent"><b>Description:</b> {{ book.author.bio }}</div>
+                            <div class="authorInfoContent"><b>Date of Birth:</b> {{ book.author.birth_date }}</div>
+                            <div class="authorInfoContent"><b>Nationality:</b> {{ book.author.nationality }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+  
+    <div style="margin:1rem 0; background-color: #ff511a; color: #FFFFFF99; padding: 20px; text-align:center;font-size: 1.3rem; font-weight: bold;">
+        BOOK HARBOUR BOOK HARBOUR BOOK HARBOUR <span style="color: white; cursor: pointer;">BOOK HARBOUR</span> BOOK HARBOUR BOOK HARBOUR BOOK HARBOUR 
+    </div>
+    
+    <footer>
+        <div class="navbar">
+            <img src="{% static 'Logo.svg' %}" alt="Book Harbour Logo" style="height: 50px; margin: 0 2.5rem;">
+            <h2 class="navbar-nav" style="margin-right: 3rem; font-size: 0.8rem; color: white;">Contact Us: bookharbour@gmail.com</h2>
+        </div>
+        <div class="navbar" style="height: 0.6rem; background-color: black;">
+            <p style="color: white; font-size: 0.5rem; margin-left: 3rem;">TERMS AND CONDITIONS</p>
+        </div>
+    </footer>
+    <script>
+        function togglePlotSummary() {
+            const plotSummary = document.querySelector('.PlotSummary');
+            plotSummary.classList.toggle('active');
+        }
+    
+        function toggleAuthorInfo() {
+            const authorInfo = document.querySelector('.authorInfo');
+            authorInfo.classList.toggle('active');
+        }
+        function showAlert() {
+            alert('Item added to cart!');
+        }
+    </script>
+
+</body>
+</html>

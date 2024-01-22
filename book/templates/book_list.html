@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'book_list.css' %}">
+    <style>
+        .container {
+            background-color: #2a2c2e;
+            width: 100%;
+            margin: 1rem 0rem;
+            padding: 2rem 3rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 60px;
+        }
+    
+        .filters {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .books {
+            display: grid;
+            grid-template-columns: repeat(3, 294px);
+            gap: 10px;
+        }
+
+        .book-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            width: 294px; 
+            height:350px; 
+            padding-bottom: 1rem;
+        }
+    
+        .book-card:hover {
+          transform: scale(1.05);
+        }
+       
+        .filter-section {
+          margin-bottom: 20px;
+        }
+    
+        h2 {
+          font-size: 18px;
+          margin-bottom: 10px;
+          color: #333;
+        }
+    
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+    
+        li {
+          margin-bottom: 8px;
+        }
+    
+        label {
+          font-size: 14px;
+          color: #555;
+        }
+    
+        select, input[type="text"], input[type="range"] {
+          width: 100%;
+          padding: 8px;
+          margin-top: 5px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+        }
+    
+        input[type="checkbox"] {
+          margin-right: 5px;
+        }
+    
+        .search-box {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 20px;
+          box-sizing: border-box;
+        }
+    
+        select {
+          background-color: #f9f9f9;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+        }
+      </style>
+</head>
+<body>
+<header>
+    <div class="navbar">
+        <img src="{% static 'Logo.svg' %}" style="height: 50px; margin: 0 2.5rem;">
+        <ul class="navbar-nav">
+            <li><a href="{% url 'home_page' %}">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="{% url 'book_list' %}">Books</a></li>
+            <div class="separate">
+                <img src="{% static 'Search.svg' %}">
+                <a href="{% url 'view_cart' %}">
+                    <img src="{% static 'Cart.svg' %}">
+                </a>
+            </div>
+            <li class="login-button">
+                {% if user.is_authenticated %}
+                    <form method="get" action="{% url 'logout_page' %}">
+                        <button type="submit">LOGOUT</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'Login' %}">LOGIN</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</header>
+
+<div style="margin:1rem 0; background-color: #ff511a; color: #FFFFFF99; padding: 20px; text-align:center;font-size: 1.3rem; font-weight: bold;">
+    BOOK HARBOUR BOOK HARBOUR BOOK HARBOUR <span style="color: white; cursor: pointer;">BOOK HARBOUR</span> BOOK HARBOUR BOOK HARBOUR BOOK HARBOUR 
+</div>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+{% block content %}
+<div class="container">
+    <div class="filters">
+        <form id="filterForm" method="GET" action="{% url 'book_list' %}">
+            <div class="filter-section">
+                <h2>Search by Title</h2>
+                <input type="text" name="title_search" placeholder="Enter title">
+                <button type="submit" name="action" value="search_title">Search Title</button>
+            </div>
+            <div class="filter-section">
+            <h2>Sort By</h2>
+            <select name="sort_by">
+                <option value="" selected disabled>Select Filter</option>
+                <option value="atoz">A to Z</option>
+                <option value="ztoa">Z to A</option>
+                <option value="pricelow">Low to High</option>
+                <option value="pricehigh">High to Low</option>
+            </select>
+            </div>
+
+            <div class="filter-section">
+                <h2>Price Range</h2>
+                <input type="number" name="min_price" placeholder="Min Price">
+                <input type="number" name="max_price" placeholder="Max Price">
+            </div>
+
+            <div class="filter-section">
+            <h2>Rating</h2>
+            <ul>
+                <li><input type="checkbox" name="rating" value="1"> <label>1 star</label></li>
+                <li><input type="checkbox" name="rating" value="2"> <label>2 stars</label></li>
+                <li><input type="checkbox" name="rating" value="3"> <label>3 stars</label></li>
+                <li><input type="checkbox" name="rating" value="4"> <label>4 stars</label></li>
+                <li><input type="checkbox" name="rating" value="5"> <label>5 stars</label></li>
+            </ul>
+            </div>
+
+            <div class="filter-section">
+                <h2>Page Range</h2>
+                <input type="number" name="min_pages" placeholder="Min Pages">
+                <input type="number" name="max_pages" placeholder="Max Pages">
+            </div>
+
+            <div class="filter-section">
+                <h2>Author</h2>
+                <input type="text" name="author" placeholder="Author">
+            </div>
+
+            <div class="filter-section">
+            <h2>Publisher</h2>
+            <input type="text" name="publisher" placeholder="Publisher Name">
+            </div>
+
+            <div class="filter-section">
+            <h2>Genre</h2>
+            <select name="genre">
+                <option value="" selected disabled>Select Genre</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="mystery">Mystery</option>
+                <option value="sci-fi">Science Fiction</option>
+            </select>
+            </div>
+
+            <div class="filter-section">
+            <h2>Language</h2>
+            <ul>
+                <li><input type="checkbox" name="language" value="english"> <label>English</label></li>
+                <li><input type="checkbox" name="language" value="spanish"> <label>Spanish</label></li>
+            </ul>
+            </div>
+
+
+            <button type="submit">Apply Filters</button>
+        </form>
+
+    {% endblock %}
+    </div> 
+
+    <div class="books">
+        {% for book in books %}
+        <div class="book-card">
+            <div class="img">
+                <img class="BookCover" src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="width:294px; margin: 0 ;object-fit: cover;"/>
+            </div>
+            <div class="Content">
+                <div class="Name">
+                    <h2>{{ book.title }}</h2>
+                    <h4>{{ book.author.name }}</h4>
+                </div>
+                <div class="Details">
+                    <a href="{% url 'book_detail' book.id %}" class="DetailsLink">Details</a>
+                </div>
+                <div class="Price">
+                    <div>₹{{ book.price }}</div>
+                    <form method="post" action="{% url 'add_to_cart' %}" onsubmit="showAlert()">
+                        {% csrf_token %}
+                        <input type="hidden" name="add_to_cart" value="{{ book.id }}">
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div style="margin:1rem 0; background-color: #ff511a; color: #FFFFFF99; padding: 20px; text-align:center;font-size: 1.3rem; font-weight: bold;">
+    BOOK HARBOUR BOOK HARBOUR BOOK HARBOUR <span style="color: white; cursor: pointer;">BOOK HARBOUR</span> BOOK HARBOUR BOOK HARBOUR BOOK HARBOUR 
+</div>
+
+<footer>
+    <div class="navbar">
+        <img src="{% static 'Logo.svg' %}" alt="Book Harbour Logo" style="height: 50px; margin: 0 2.5rem;">
+        <h2 class="navbar-nav" style="margin-right: 3rem; font-size: 0.8rem; color: white;">Contact Us: bookharbour@gmail.com</h2>
+    </div>
+    <div class="navbar" style="height: 0.6rem; background-color: black;">
+        <p style="color: white; font-size: 0.5rem; margin-left: 3rem;">TERMS AND CONDITIONS</p>
+    </div>
+</footer>
+
+<script>
+    function showAlert() {
+        alert('Item added to cart!');
+    }
+</script>
+
+</body>
+</html>
